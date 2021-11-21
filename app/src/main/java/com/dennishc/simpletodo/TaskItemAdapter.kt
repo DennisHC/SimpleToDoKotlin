@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * A bridge that tells the RecyclerView how to display the data we give it
  */
-class TaskItemAdapter(val listOfItems: List<String>)
-    : RecyclerView.Adapter<TaskItemAdapter.ViewHolder>() {
+class TaskItemAdapter(val listOfItems: List<String>,
+                      val longClickListener: OnLongClickListener) :
+    RecyclerView.Adapter<TaskItemAdapter.ViewHolder>() {
 
+    //
     interface OnLongClickListener {
+        // We want other to have to implement this method
         fun onItemLongClicked(position: Int)
     }
 
@@ -48,8 +51,10 @@ class TaskItemAdapter(val listOfItems: List<String>)
         init {
             textView = itemView.findViewById(android.R.id.text1)
 
+            // Set an onLongClickListener for every item in the RecyclerView
             itemView.setOnLongClickListener {
                 Log.i("Dennis", "Long clicked on item: " + adapterPosition)
+                longClickListener.onItemLongClicked(adapterPosition)
                 // return True or False
                 true
             }
